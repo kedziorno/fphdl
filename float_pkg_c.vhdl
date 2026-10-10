@@ -26,6 +26,10 @@ use ieee_proposed.fixed_float_types.all;
 use ieee_proposed.fixed_pkg.all;
 
 package float_pkg is
+-- rtl_synthesis off
+-- pragma synthesis_off
+--synthesis translate_off
+
 -- generic (
   -- Defaults for sizing routines, when you do a "to_float" this will be
   -- the default size.  Example float32 would be 8 and 23 (8 downto -23)
@@ -861,8 +865,7 @@ package float_pkg is
   -- ===========================================================================
   -- string and textio Functions
   -- ===========================================================================
--- rtl_synthesis off
--- pragma synthesis_off
+
   -- writes S:EEEE:FFFFFFFF
   procedure WRITE (
     L         : inout LINE;              -- access type (pointer)
@@ -971,8 +974,6 @@ package float_pkg is
     return UNRESOLVED_float;
   alias from_hex_string is from_hstring [STRING, UNRESOLVED_float
                                          return UNRESOLVED_float];
--- rtl_synthesis on
--- pragma synthesis_on
   -- IN VHDL-2006 std_logic_vector is a subtype of std_ulogic_vector, so these
   -- extra functions are needed for compatability.
   function to_float (
@@ -990,6 +991,9 @@ package float_pkg is
   function realtobits (arg : REAL) return STD_LOGIC_VECTOR;
   function bitstoreal (arg : STD_LOGIC_VECTOR) return REAL;
 
+-- rtl_synthesis on
+-- pragma synthesis_on
+--synthesis translate_on
 end package float_pkg;
 -------------------------------------------------------------------------------
 -- Proposed package body for the VHDL-200x-FT float_pkg package
@@ -1004,6 +1008,9 @@ end package float_pkg;
 -------------------------------------------------------------------------------
 
 package body float_pkg is
+-- rtl_synthesis off
+-- pragma synthesis_off
+--synthesis translate_off
 
   -- Author David Bishop (dbishop@vhdl.org)
   -----------------------------------------------------------------------------
@@ -6168,9 +6175,6 @@ package body float_pkg is
       fraction_width => -size_res'low);
   end function neg_zerofp;
 
--- rtl_synthesis off
--- pragma synthesis_off
-
   --%%% these functions are copied from std_logic_1164 (VHDL-200X edition)
   -- Textio functions
   -- purpose: writes float into a line (NOTE changed basetype)
@@ -7081,8 +7085,7 @@ package body float_pkg is
                          exponent_width => size_res'high,
                          fraction_width => -size_res'low);
   end function from_hstring;
--- rtl_synthesis on
--- pragma synthesis_on
+
   function to_float (
     arg                     : STD_LOGIC_VECTOR;
     constant exponent_width : NATURAL := float_exponent_width;  -- length of FP output exponent
@@ -7124,4 +7127,7 @@ package body float_pkg is
     return to_real (arg64);
   end function bitstoreal;
 
+-- rtl_synthesis on
+-- pragma synthesis_on
+--synthesis translate_on
 end package body float_pkg;

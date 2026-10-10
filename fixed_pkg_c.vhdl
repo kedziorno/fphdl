@@ -23,6 +23,9 @@ library IEEE_PROPOSED;
 use IEEE_PROPOSED.fixed_float_types.all;
 
 package fixed_pkg is
+-- rtl_synthesis off
+-- pragma synthesis_off
+--synthesis translate_off
 -- generic (
   -- Rounding routine to use in fixed point, fixed_round or fixed_truncate
   constant fixed_round_style    : fixed_round_style_type    := fixed_round;
@@ -1120,8 +1123,7 @@ package fixed_pkg is
                      operation         : CHARACTER := 'X';
                      width2, fraction2 : NATURAL   := 0)
     return INTEGER;
--- rtl_synthesis off
--- pragma synthesis_off
+
   --===========================================================================
   -- string and textio Functions
   --===========================================================================
@@ -1409,8 +1411,6 @@ package fixed_pkg is
     hstring : STRING)                   -- hex string
     return UNRESOLVED_sfixed;
   alias from_hex_string is from_hstring [STRING return UNRESOLVED_sfixed];
--- rtl_synthesis on
--- pragma synthesis_on
 
   -- IN VHDL-2006 std_logic_vector is a subtype of std_ulogic_vector, so these
   -- extra functions are needed for compatability.
@@ -1450,6 +1450,9 @@ package fixed_pkg is
     fraction : NATURAL)                 -- width of fraction
     return UNRESOLVED_sfixed;
 
+-- rtl_synthesis on
+-- pragma synthesis_on
+--synthesis translate_on
 end package fixed_pkg;
 -------------------------------------------------------------------------------
 -- Proposed package body for the VHDL-200x-FT fixed_pkg package
@@ -1464,6 +1467,10 @@ library IEEE;
 use IEEE.MATH_REAL.all;
 
 package body fixed_pkg is
+-- rtl_synthesis off
+-- pragma synthesis_off
+--synthesis translate_off
+
   -- Author David Bishop (dbishop@vhdl.org)
   -- Other contributers: Jim Lewis, Yannick Grugni, Ryan W. Hilton
   -- null array constants
@@ -6869,8 +6876,7 @@ package body fixed_pkg is
   begin
     return minimum (to_sfixed (l, r'high, r'low), r);
   end function minimum;
--- rtl_synthesis off
--- pragma synthesis_off
+
   -- copied from std_logic_textio
   type MVL9plus is ('U', 'X', '0', '1', 'Z', 'W', 'L', 'H', '-', error);
   type char_indexed_by_MVL9 is array (STD_ULOGIC) of CHARACTER;
@@ -8301,8 +8307,7 @@ package body fixed_pkg is
     calculate_string_boundry (hstring, left_index, right_index);
     return from_hstring (hstring, ((left_index+1)*4)-1, right_index*4);
   end function from_hstring;
--- pragma synthesis_on
--- rtl_synthesis on
+
   -- IN VHDL-2006 std_logic_vector is a subtype of std_ulogic_vector, so these
   -- extra functions are needed for compatability.
   function to_ufixed (
@@ -8375,4 +8380,7 @@ package body fixed_pkg is
       fraction => fraction);
   end function to_SFix;
 
+-- rtl_synthesis on
+-- pragma synthesis_on
+--synthesis translate_on
 end package body fixed_pkg;
