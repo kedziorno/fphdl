@@ -1559,11 +1559,24 @@ package body float_pkg is
     arg : UNRESOLVED_float)             -- fp vector
     return STD_ULOGIC_VECTOR is
     variable result : STD_ULOGIC_VECTOR (arg'length-1 downto 0);
+    variable temp : STD_ULOGIC_VECTOR (arg'length-1 downto 0);
   begin  -- function to_std_ulogic_vector
     if arg'length < 1 then
       return NSLV;
     end if;
-    result := STD_ULOGIC_VECTOR (arg);
+    -- fix for GHDL -23 to -1
+    if (arg'left = -1 and arg'right = -23) then
+      for i in -23 to -1 loop
+        temp (i+23) := arg (i);
+      end loop;
+    end if;
+    -- fix for GHDL -23 to 8
+    if (arg'left = 8 and arg'right = -23) then
+      for i in -23 to 8 loop
+        temp (i+23) := arg (i);
+      end loop;
+    end if;
+    result := STD_ULOGIC_VECTOR (temp);
     return result;
   end function to_sulv;
 
